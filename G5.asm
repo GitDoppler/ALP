@@ -1,0 +1,43 @@
+DATA SEGMENT PARA PUBLIC 'DATA'
+
+DATA ENDS
+
+MULTITWIST MACRO ammount
+    repeat:
+        CALL TWIST
+        DEC ammount
+        CMP ammount,0
+        JNE repeat
+ENDM
+
+CODE SEGMENT PARA PUBLIC 'CODE'
+ASSUME CS:CODE, DS:DATA
+START PROC FAR
+PUSH DS
+XOR AX, AX
+MOV DS, AX
+PUSH AX
+MOV AX, DATA
+MOV DS, AX
+; your code starts here
+    MOV AX,4567H
+    MOV BX,0ABCDH
+    MOV DX,2H
+    MULTITWIST DX
+; your code ends here
+RET
+START ENDP
+
+TWIST PROC NEAR
+    AND AX,0AFAH
+    OR BX,0202H
+    MOV CX,BX
+    MOV BH,AL
+    MOV AL,CH
+    MOV BL,AH
+    MOV AH,CL
+    RET
+TWIST ENDP
+
+CODE ENDS
+END START
